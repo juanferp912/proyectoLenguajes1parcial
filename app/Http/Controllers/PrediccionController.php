@@ -1,7 +1,6 @@
 <?php
 
-namespace App\Http/Controllers;
-
+namespace App\Http\Controllers;
 use App\Models\Prediccion;
 use App\Models\Partido;
 use Illuminate\Http\Request;

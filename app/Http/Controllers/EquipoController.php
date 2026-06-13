@@ -9,7 +9,8 @@ class EquipoController extends Controller
     // Mostrar lista de equipos al Admin
     public function index()
     {
-        $equipos = Equipo::all();
+        $equipos = Equipo::orderBy('grupo', 'asc')->orderBy('nombre', 'asc')->get();
+        
         return view('admin.equipos.index', compact('equipos'));
     }
 
@@ -23,11 +24,23 @@ class EquipoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required|unique:equipos|max:255',
-            'bandera_url' => 'required|url', // Validamos que sea un link del CDN
+            'preset_team' => 'required',
+            'grupo' => 'required|max:1',
         ]);
 
-        Equipo::create($request->all());
+        list($nombre, $codigoIso) = explode('|', $request->preset_team);
+
+        if (Equipo::where('nombre', $nombre)->exists()) {
+            return back()->withErrors(['preset_team' => 'Este país ya está registrado en el Mundial.']);
+        }
+
+        $banderaUrl = "https://flagcdn.com/w80/" . strtolower($codigoIso) . ".png";
+
+        Equipo::create([
+            'nombre' => $nombre,
+            'bandera_url' => $banderaUrl,
+            'grupo' => strtoupper($request->grupo),
+        ]);
 
         return redirect()->route('equipos.index')->with('success', 'Equipo creado exitosamente.');
     }

@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre')->unique();
             $table->string('bandera_url');
+            $table->string('grupo', 1);
             $table->timestamps();
         });
     }

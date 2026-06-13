@@ -9,7 +9,7 @@ class Equipo extends Model
 {
     use HasFactory;
     protected $table = 'equipos';
-    protected $fillable = ['nombre', 'bandera_url'];
+    protected $fillable = ['nombre', 'bandera_url', 'grupo'];
 
     public function partidosLocal()
     {

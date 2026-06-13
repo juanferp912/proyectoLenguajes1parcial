@@ -26,29 +26,31 @@ class PrediccionController extends Controller
 
     public function store(Request $request)
     {
+        // 1. Validar usando tus campos reales de la DB
         $request->validate([
             'partido_id' => 'required|exists:partidos,id',
             'goles_local_prediccion' => 'required|integer|min:0',
             'goles_visitante_prediccion' => 'required|integer|min:0',
         ]);
 
-        // Evitar que el usuario duplique predicciones para un mismo partido
-        $existe = Prediccion::where('user_id', auth()->id())
-            ->where('partido_id', $request->partido_id)
-            ->exists();
+        // 2. Evitar duplicados para el mismo partido
+        $yaAposto = Prediccion::where('user_id', auth()->id())
+                            ->where('partido_id', $request->partido_id)
+                            ->exists();
 
-        if ($existe) {
-            return redirect()->back()->with('error', 'Ya creaste una predicción para este partido. Puedes editarla en tu panel.');
+        if ($yaAposto) {
+            return back()->withErrors(['partido_id' => 'Ya registraste una predicción para este partido.']);
         }
 
+        // 3. Crear el registro con tu estructura exacta
         Prediccion::create([
-            'user_id' => auth()->id(), // El ID del usuario autenticado automáticamente
+            'user_id' => auth()->id(),
             'partido_id' => $request->partido_id,
             'goles_local_prediccion' => $request->goles_local_prediccion,
             'goles_visitante_prediccion' => $request->goles_visitante_prediccion,
         ]);
 
-        return redirect()->route('predicciones.index')->with('success', '¡Predicción guardada!');
+        return redirect()->route('predicciones.index')->with('success', '¡Predicción guardada con éxito!');
     }
 
     public function edit($id)

@@ -19,8 +19,14 @@ class PrediccionController extends Controller
 
     public function create()
     {
-        // Traemos los partidos para que el usuario pueda elegir a cuál apostarle
-        $partidos = Partido::with(['equipoLocal', 'equipoVisitante'])->get();
+        // Buscamos los IDs de los partidos donde el usuario YA apostó
+        $partidosApostados = Prediccion::where('user_id', auth()->id())->pluck('partido_id');
+
+        // Traemos solo los partidos que NO estén en esa lista 🧠✨
+        $partidos = Partido::whereNotIn('id', $partidosApostados)
+                            ->with(['equipoLocal', 'equipoVisitante'])
+                            ->get();
+
         return view('usuario.predicciones.create', compact('partidos'));
     }
 

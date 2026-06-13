@@ -8,15 +8,17 @@ use Illuminate\Http\Request;
 class PartidoController extends Controller
 {
     public function index()
-    {
-        // Usamos con('equipoLocal', 'equipoVisitante') para evitar el problema de consultas N+1
-        $partidos = Partido::with(['equipoLocal', 'equipoVisitante'])->get();
+    {        $partidos = Partido::with(['equipoLocal', 'equipoVisitante'])
+            ->orderBy('fecha_partido', 'asc')
+            ->get();
+
         return view('admin.partidos.index', compact('partidos'));
     }
 
     public function create()
     {
-        $equipos = Equipo::all(); // Necesarios para elegir local y visitante
+        $equipos = Equipo::orderBy('grupo', 'asc')->orderBy('nombre', 'asc')->get();
+        
         return view('admin.partidos.create', compact('equipos'));
     }
 
@@ -43,7 +45,7 @@ class PartidoController extends Controller
     public function edit($id)
     {
         $partido = Partido::findOrFail($id);
-        $equipos = Equipo::all();
+        $equipos = Equipo::orderBy('grupo', 'asc')->orderBy('nombre', 'asc')->get();
         return view('admin.partidos.edit', compact('partido', 'equipos'));
     }
 

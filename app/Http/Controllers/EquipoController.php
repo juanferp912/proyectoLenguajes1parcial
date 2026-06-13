@@ -17,7 +17,17 @@ class EquipoController extends Controller
     // Mostrar formulario de creación
     public function create()
     {
-        return view('admin.equipos.create');
+        // 1. Jalamos los países ya creados para el primer selector
+        $paisesRegistrados = Equipo::pluck('nombre')->toArray();
+
+        // 2. Contamos cuántos equipos hay por grupo y traemos los que ya tienen 4 o más 🧠✨
+        $gruposCompletos = Equipo::select('grupo')
+            ->groupBy('grupo')
+            ->havingRaw('COUNT(*) >= 4')
+            ->pluck('grupo')
+            ->toArray(); // Devuelve algo como ['A', 'E'] si están llenos
+
+        return view('admin.equipos.create', compact('paisesRegistrados', 'gruposCompletos'));
     }
 
     // Guardar el nuevo equipo
@@ -32,6 +42,12 @@ class EquipoController extends Controller
 
         if (Equipo::where('nombre', $nombre)->exists()) {
             return back()->withErrors(['preset_team' => 'Este país ya está registrado en el Mundial.']);
+        }
+
+        // 🚨 Candado de seguridad: Validar en el servidor que el grupo no se pase de 4
+        $conteoGrupo = Equipo::where('grupo', strtoupper($request->grupo))->count();
+        if ($conteoGrupo >= 4) {
+            return back()->withErrors(['grupo' => 'El Grupo ' . strtoupper($request->grupo) . ' ya está completo (máximo 4 selecciones).']);
         }
 
         $banderaUrl = "https://flagcdn.com/w80/" . strtolower($codigoIso) . ".png";

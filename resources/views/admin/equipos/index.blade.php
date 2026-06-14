@@ -1,69 +1,50 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-5">
+<div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h2 class="fw-bold mb-1">🏆 Distribución de Grupos</h2>
-        <p class="text-muted mb-0">Mundial 2026 - Panel de Control del Administrador</p>
+        <h2 class="fw-bold mb-1" style="color: #0f172a;">🏆 Distribución de Grupos</h2>
+        <p class="text-muted mb-0">
+            Mundial 2026 - Panel de Control del Administrador 
+            <span class="d-block d-md-inline ms-md-2 fw-semibold" style="font-size: 0.85rem; color: #4f46e5;">(Sabemos 3 veces más de fútbol que 412)</span>
+        </p>
     </div>
-    <a href="{{ route('equipos.create') }}" class="btn btn-success fw-bold px-4 py-2 shadow-sm">+ Agregar País</a>
+    <a href="{{ route('equipos.create') }}" class="btn-indigo-tech">+ Agregar País</a>
 </div>
 
-@if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert">
-        🚀 {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-@endif
-
-@if($equipos->isEmpty())
-    <div class="card shadow-sm text-center py-5">
-        <div class="card-body">
-            <span class="display-1">😔</span>
-            <h3 class="mt-3 text-muted">No hay ningún país registrado todavía.</h3>
-            <p>Comienza agregando las selecciones para armar los grupos del mundial.</p>
-        </div>
-    </div>
-@else
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
-        @foreach($equipos->groupBy('grupo') as $grupo => $equiposDelGrupo)
-            <div class="col">
-                <div class="card h-100 shadow-sm border-0 bg-white">
-                    <div class="card-header bg-dark text-white fw-bold d-flex justify-content-between align-items-center py-3">
-                        <span class="fs-5">✨ Grupo {{ $grupo }}</span>
-                        <span class="badge {{ $equiposDelGrupo->count() == 4 ? 'bg-success' : 'bg-warning text-dark' }} px-2 py-1">
-                            {{ $equiposDelGrupo->count() }}/4 Equipos
-                        </span>
-                    </div>
-                    
-                    <div class="card-body p-0">
-                        <table class="table table-hover table-striped mb-0 align-middle">
-                            <tbody>
-                                @foreach($equiposDelGrupo as $equipo)
-                                    <tr>
-                                        <td class="ps-3" style="width: 60px;">
-                                            <img src="{{ $equipo->bandera_url }}" width="38" class="img-thumbnail shadow-sm p-0 border-0" alt="Bandera">
-                                        </td>
-                                        <td class="fw-bold text-dark fs-6">
-                                            {{ $equipo->nombre }}
-                                        </td>
-                                        <td class="text-end pe-3" style="width: 110px;">
-                                            <a href="{{ route('equipos.edit', $equipo->id) }}" class="btn btn-sm btn-outline-warning border-0 p-1 px-2" title="Editar">✏️</a>
-                                            
-                                            <form action="{{ route('equipos.destroy', $equipo->id) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Seguro que deseas eliminar a {{ $equipo->nombre }} del Mundial?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-outline-danger border-0 p-1 px-2" title="Eliminar">🗑️</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'] as $letraGrupo)
+        @php
+            $equiposGrupo = $equipos->where('grupo', $letraGrupo);
+        @endphp
+        <div class="col">
+            <div class="app-card h-100">
+                <div class="d-flex justify-content-between align-items-center py-3 px-4" style="border-bottom: 1px solid #f1f5f9; border-top-left-radius: 12px; border-top-right-radius: 12px;">
+                    <h5 class="mb-0 fw-bold" style="color: #1e293b; font-size: 1rem;">✨ Grupo {{ $letraGrupo }}</h5>
+                    <span class="badge-status-app">{{ $equiposGrupo->count() }}/4 Equipos</span>
                 </div>
+                <ul class="list-group list-group-flush" style="border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;">
+                    @forelse($equiposGrupo as $equipo)
+                        <li class="list-group-item d-flex justify-content-between align-items-center py-3 px-4" style="border: none; background: transparent;">
+                            <div class="d-flex align-items-center">
+                                <img src="{{ $equipo->bandera_url }}" width="24" class="me-2 rounded shadow-sm" alt="Bandera">
+                                <span class="fw-semibold" style="color: #334155; font-size: 0.95rem;">{{ $equipo->nombre }}</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <a href="{{ route('equipos.edit', $equipo->id) }}" class="btn-secondary-app py-1 px-2" title="Editar">✏️</a>
+                                <form action="{{ route('equipos.destroy', $equipo->id) }}" method="POST" onsubmit="return confirm('¿Seguro de eliminar este país?');" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-secondary-app py-1 px-2" title="Eliminar">🗑️</button>
+                                </form>
+                            </div>
+                        </li>
+                    @empty
+                        <li class="list-group-item text-muted text-center py-4" style="border: none; background: transparent;">No hay equipos en este grupo</li>
+                    @endforelse
+                </ul>
             </div>
-        @endforeach
-    </div>
-@endif
+        </div>
+    @endforeach
+</div>
 @endsection

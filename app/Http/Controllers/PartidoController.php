@@ -30,12 +30,12 @@ class PartidoController extends Controller
             'fecha_partido' => 'required|date',
         ]);
 
-        // Se crea con goles en null o 0 por defecto hasta que se juegue
+        // Se crea con goles en null por defecto hasta que se juegue
         Partido::create([
             'equipo_local_id' => $request->equipo_local_id,
             'equipo_visitante_id' => $request->equipo_visitante_id,
-            'goles_local' => $request->goles_local ?? 0,
-            'goles_visitante' => $request->goles_visitante ?? 0,
+            'goles_local' => $request->has('goles_local') ? $request->goles_local : null,
+            'goles_visitante' => $request->has('goles_visitante') ? $request->goles_visitante : null,
             'fecha_partido' => $request->fecha_partido,
         ]);
 
@@ -71,5 +71,14 @@ class PartidoController extends Controller
         $partido->delete();
 
         return redirect()->route('partidos.index')->with('success', 'Partido eliminado.');
+    }
+
+    public function calendarioPublico()
+    {
+        $partidos = Partido::with(['equipoLocal', 'equipoVisitante'])
+            ->orderBy('fecha_partido', 'asc')
+            ->get();
+
+        return view('usuario.partidos.index', compact('partidos'));
     }
 }

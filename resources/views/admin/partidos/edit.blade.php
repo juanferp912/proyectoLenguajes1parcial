@@ -36,11 +36,11 @@
                     <div class="row mb-3 bg-light p-3 rounded shadow-sm text-center">
                         <div class="col-6">
                             <label class="form-label fw-bold text-primary">Goles Local</label>
-                            <input type="number" name="goles_local" class="form-control text-center fs-4 fw-bold" min="0" value="{{ old('goles_local', $partido->goles_local) }}">
+                            <input type="number" name="goles_local" class="form-control text-center fs-4 fw-bold" min="0" value="{{ old('goles_local', $partido->goles_local ?? 0) }}">
                         </div>
                         <div class="col-6">
                             <label class="form-label fw-bold text-primary">Goles Visitante</label>
-                            <input type="number" name="goles_visitante" class="form-control text-center fs-4 fw-bold" min="0" value="{{ old('goles_visitante', $partido->goles_visitante) }}">
+                            <input type="number" name="goles_visitante" class="form-control text-center fs-4 fw-bold" min="0" value="{{ old('goles_visitante', $partido->goles_visitante ?? 0) }}">
                         </div>
                     </div>
 

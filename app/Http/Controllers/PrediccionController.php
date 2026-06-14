@@ -19,12 +19,11 @@ class PrediccionController extends Controller
 
     public function create()
     {
-        // Buscamos los IDs de los partidos donde el usuario YA apostó
         $partidosApostados = Prediccion::where('user_id', auth()->id())->pluck('partido_id');
-
-        // Traemos solo los partidos que NO estén en esa lista 🧠✨
         $partidos = Partido::whereNotIn('id', $partidosApostados)
+                            ->where('fecha_partido', '>', now())
                             ->with(['equipoLocal', 'equipoVisitante'])
+                            ->orderBy('fecha_partido', 'asc')
                             ->get();
 
         return view('usuario.predicciones.create', compact('partidos'));
@@ -32,14 +31,12 @@ class PrediccionController extends Controller
 
     public function store(Request $request)
     {
-        // 1. Validar usando tus campos reales de la DB
         $request->validate([
             'partido_id' => 'required|exists:partidos,id',
             'goles_local_prediccion' => 'required|integer|min:0',
             'goles_visitante_prediccion' => 'required|integer|min:0',
         ]);
 
-        // 2. Evitar duplicados para el mismo partido
         $yaAposto = Prediccion::where('user_id', auth()->id())
                             ->where('partido_id', $request->partido_id)
                             ->exists();

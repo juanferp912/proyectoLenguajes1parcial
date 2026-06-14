@@ -9,7 +9,7 @@
 
                 <form action="{{ route('equipos.update', $equipo->id) }}" method="POST">
                     @csrf
-                    @method('PUT') <!-- OBLIGATORIO para que Laravel reconozca tu función update -->
+                    @method('PUT')
 
                     <div class="mb-3">
                         <label class="form-label fw-bold">Nombre del País</label>

@@ -3,18 +3,11 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h2 class="fw-bold mb-1">🎯 Mis Predicciones</h2>
+        <h2 class="fw-bold mb-1" style="color: #0f172a; font-family: 'Inter', sans-serif;">Mis Predicciones</h2>
         <p class="text-muted mb-0">Gestiona tus apuestas y consulta tus puntos en vivo</p>
     </div>
-    <a href="{{ route('predicciones.create') }}" class="btn btn-primary fw-bold px-4 py-2 shadow-sm">🎯 Ingresar Apuesta</a>
+    <a href="{{ route('predicciones.create') }}" class="btn-indigo-tech">Ingresar Apuesta</a>
 </div>
-
-@if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert">
-        🚀 {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-@endif
 
 <div class="row">
     @forelse($predicciones as $prediccion)
@@ -52,7 +45,11 @@
                     <div class="small">
                         <span class="text-secondary fw-bold">Resultado Real:</span>
                         <span class="badge bg-secondary">
-                            {{ $prediccion->partido->goles_local }} - {{ $prediccion->partido->goles_visitante }}
+                            @if(is_null($prediccion->partido->goles_local) || is_null($prediccion->partido->goles_visitante))
+                                -
+                            @else
+                                {{ $prediccion->partido->goles_local }} - {{ $prediccion->partido->goles_visitante }}
+                            @endif
                         </span>
                     </div>
                 </div>

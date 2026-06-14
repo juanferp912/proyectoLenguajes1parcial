@@ -1,22 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-        <h2 class="fw-bold mb-1" style="color: #0f172a;">📅 Calendario de Partidos</h2>
-        <p class="text-muted mb-0">
-            Administración de fechas y resultados del Mundial 
-            <span class="d-block d-md-inline ms-md-2 fw-semibold" style="font-size: 0.85rem; color: #4f46e5;">(Sabemos 3 veces más de fútbol que 412)</span>
-        </p>
-    </div>
-    <a href="{{ route('partidos.create') }}" class="btn-indigo-tech">+ Programar Partido</a>
+<div class="mb-4">
+    <h2 class="fw-bold mb-1" style="color: #0f172a;">📅 Calendario del Mundial</h2>
+    <p class="text-muted mb-0">
+        Revisa las fechas, horarios y resultados en tiempo real. 
+        <span class="d-block d-md-inline ms-md-2 fw-semibold" style="font-size: 0.85rem; color: #4f46e5;">(Sabemos 3 veces más de fútbol que 412)</span>
+    </p>
 </div>
 
 @if($partidos->isEmpty())
     <div class="app-card text-center py-5">
         <div class="card-body">
             <span class="display-1">📅</span>
-            <h4 class="mt-3 text-muted">No hay partidos programados todavía. ¡Crea el primero arriba!</h4>
+            <h4 class="mt-3 text-muted">No hay partidos programados todavía.</h4>
         </div>
     </div>
 @else
@@ -32,7 +29,7 @@
                 @endphp
                 <div class="match-dashboard-box d-flex align-items-center justify-content-between p-3 px-4">
                     <!-- Left: Status and Time -->
-                    <div class="d-flex flex-column align-items-start" style="width: 15%;">
+                    <div class="d-flex flex-column align-items-start" style="width: 20%;">
                         <span class="badge-status-app mb-1">
                             {{ $isFinished ? 'Finalizado' : 'Por Jugar' }}
                         </span>
@@ -42,7 +39,7 @@
                     </div>
 
                     <!-- Center: Teams and Score -->
-                    <div class="d-flex align-items-center justify-content-center flex-grow-1" style="width: 65%;">
+                    <div class="d-flex align-items-center justify-content-center flex-grow-1" style="width: 80%;">
                         <!-- Local Team -->
                         <div class="d-flex align-items-center justify-content-end text-end" style="width: 40%;">
                             <span class="fw-semibold me-2" style="font-size: 1rem; color: #1e293b;">{{ $partido->equipoLocal->nombre }}</span>
@@ -65,16 +62,6 @@
                             <img src="{{ $partido->equipoVisitante->bandera_url }}" width="36" class="rounded shadow-sm me-2" alt="Bandera">
                             <span class="fw-semibold" style="font-size: 1rem; color: #1e293b;">{{ $partido->equipoVisitante->nombre }}</span>
                         </div>
-                    </div>
-
-                    <!-- Right: Actions -->
-                    <div class="d-flex justify-content-end gap-2" style="width: 20%;">
-                        <a href="{{ route('partidos.edit', $partido->id) }}" class="btn-secondary-app" title="Editar">✏️ Editar</a>
-                        <form action="{{ route('partidos.destroy', $partido->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este partido?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn-secondary-app" title="Eliminar">🗑️</button>
-                        </form>
                     </div>
                 </div>
             @endforeach

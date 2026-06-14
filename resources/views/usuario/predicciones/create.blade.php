@@ -38,12 +38,12 @@
                         
                         <div class="col-6">
                             <label class="form-label small fw-bold text-dark">Goles Local</label>
-                            <input type="number" name="goles_local_prediccion" class="form-control text-center fs-4 fw-bold" min="0" placeholder="0" value="{{ old('goles_local_prediccion') }}" required>
+                            <input type="number" name="goles_local_prediccion" class="form-control text-center fs-4 fw-bold" min="0" placeholder="0" value="{{ old('goles_local_prediccion', 0) }}" required>
                         </div>
                         
                         <div class="col-6">
                             <label class="form-label small fw-bold text-dark">Goles Visitante</label>
-                            <input type="number" name="goles_visitante_prediccion" class="form-control text-center fs-4 fw-bold" min="0" placeholder="0" value="{{ old('goles_visitante_prediccion') }}" required>
+                            <input type="number" name="goles_visitante_prediccion" class="form-control text-center fs-4 fw-bold" min="0" placeholder="0" value="{{ old('goles_visitante_prediccion', 0) }}" required>
                         </div>
                     </div>
 

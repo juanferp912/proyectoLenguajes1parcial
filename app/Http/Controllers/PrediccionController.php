@@ -9,10 +9,16 @@ class PrediccionController extends Controller
 {
     public function index()
     {
-        // El usuario solo ve sus propias predicciones
+        // El usuario solo ve sus propias predicciones ordenadas por grupo de los equipos y luego fecha del partido
         $predicciones = Prediccion::where('user_id', auth()->id())
             ->with(['partido.equipoLocal', 'partido.equipoVisitante'])
-            ->get();
+            ->get()
+            ->sortBy(function($prediccion) {
+                return [
+                    $prediccion->partido->equipoLocal->grupo ?? 'Z',
+                    $prediccion->partido->fecha_partido
+                ];
+            });
 
         return view('usuario.predicciones.index', compact('predicciones'));
     }

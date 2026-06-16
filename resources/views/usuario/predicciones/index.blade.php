@@ -13,8 +13,9 @@
     @forelse($predicciones as $prediccion)
         <div class="col-md-6 col-lg-4 mb-4">
             <div class="card h-100 shadow-sm border-0">
-                <div class="card-header bg-light text-muted text-center small fw-bold py-2">
-                    📅 {{ date('d/m/Y H:i', strtotime($prediccion->partido->fecha_partido)) }}
+                <div class="card-header bg-light text-muted d-flex justify-content-between align-items-center small fw-bold py-2 px-3">
+                    <span class="badge text-white px-2 py-1" style="background-color: #4f46e5;">Grupo {{ $prediccion->partido->equipoLocal->grupo }}</span>
+                    <span>📅 {{ date('d/m/Y H:i', strtotime($prediccion->partido->fecha_partido)) }}</span>
                 </div>
                 
                 <div class="card-body py-4">
@@ -43,7 +44,7 @@
                 <div class="card-footer bg-white text-center border-top-0 pb-3">
                     <hr class="my-2">
                     <div class="small">
-                        <span class="text-secondary fw-bold">Resultado Real:</span>
+                        <span class="text-secondary fw-bold">Resultado:</span>
                         <span class="badge bg-secondary">
                             @if(is_null($prediccion->partido->goles_local) || is_null($prediccion->partido->goles_visitante))
                                 -

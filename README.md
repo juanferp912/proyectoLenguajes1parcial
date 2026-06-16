@@ -1,59 +1,107 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🏆 Proyecto de Predicciones - Mundial / Torneo Fútbol
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este proyecto es una aplicación web interactiva desarrollada en **Laravel** para la gestión de predicciones de partidos de fútbol (tipo Quiniela/Polla). Permite a los usuarios regulares registrar pronósticos para los partidos del torneo, y a los administradores gestionar los equipos, partidos y resultados.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 👥 Integrantes y Roles del Proyecto
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 👨‍💻 Juan Fernando (juanferp912)
+Se encargó de la configuración inicial, la lógica del backend, la seguridad y el diseño final de la interfaz:
+* **Docker y Laravel**: Creó la estructura inicial del proyecto en Laravel y configuró la conexión con Docker para levantar la base de datos MySQL en red local.
+* **Base de Datos**: Diseñó las tablas (equipos, partidos, predicciones) con sus respectivas llaves foráneas y eliminaciones en cascada.
+* **Backend (CRUD)**: Programó los controladores que procesan las peticiones, guardan los datos y aplican las reglas (como el límite de 4 equipos por grupo).
+* **Seguridad**: Configuró los Middlewares para proteger las rutas de la aplicación y organizó la fusión de código mediante Pull Requests.
+* **Diseño UI**: Implementó el rediseño final del panel, cambiando las tablas viejas por tarjetas modernas con cápsulas para los marcadores.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 👨‍💻 Anthony Julian (AnthonyMNJ)
+Se encargó de armar todo el sistema de vistas desde cero y conectar los formularios del CRUD:
+* **Plantillas Base**: Diseñó la plantilla maestra (layout base) en Blade para que todas las páginas del sitio web tengan la misma estructura y menús.
+* **Vistas de Roles**: Creó las pantallas del panel dividiendo lo que ve el Administrador (gestión) de lo que ve el Usuario común (predicciones).
+* **Formularios del CRUD**: Diseñó y conectó todos los formularios para ingresar, editar y eliminar datos, asegurando que se comuniquen con el backend.
+* **Componentes de la App**: Armó los bloques visuales, la distribución de los botones de acción rápida y la organización inicial de los grupos.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## 🛠️ Requisitos Previos
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Antes de instalar el proyecto, asegúrate de contar con:
+* **PHP** (versión 8.2 o superior)
+* **Composer**
+* **Node.js** (v18+) y **NPM**
+* **SQLite** (por defecto configurado localmente) o **MySQL/Docker**
 
-## Laravel Sponsors
+---
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🚀 Instrucciones de Instalación y Ejecución
 
-### Premium Partners
+Sigue estos pasos detallados para configurar el proyecto localmente:
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 1. Clonar e Instalar Dependencias
+Clona el repositorio en tu máquina local e instala las dependencias de PHP y JavaScript:
+```bash
+composer install
+npm install
+```
 
-## Contributing
+### 2. Configurar Archivo de Entorno `.env`
+Duplica el archivo de configuración de ejemplo:
+* **Linux/macOS:**
+  ```bash
+  cp .env.example .env
+  ```
+* **Windows (PowerShell):**
+  ```powershell
+  copy .env.example .env
+  ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 3. Generar la Clave de Aplicación
+```bash
+php artisan key:generate
+```
 
-## Code of Conduct
+### 4. Configurar la Base de Datos
+Por defecto, el proyecto está configurado para utilizar **SQLite**.
+Asegúrate de que tu archivo `.env` tenga las siguientes líneas:
+```env
+DB_CONNECTION=sqlite
+# Si utilizas SQLite, el motor buscará automáticamente el archivo database/database.sqlite
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 5. Correr Migraciones y Alimentar la Base de Datos (Seeders)
+Ejecuta las migraciones para crear la estructura de tablas y cargar los usuarios iniciales de prueba:
+```bash
+php artisan migrate --seed
+```
 
-## Security Vulnerabilities
+### 6. Compilar Recursos Frontend
+Genera el paquete de assets css y js compilado:
+```bash
+npm run build
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 7. Levantar el Servidor de Desarrollo
+```bash
+php artisan serve
+```
+Accede a la aplicación ingresando a [http://127.0.0.1:8000](http://127.0.0.1:8000) en tu navegador.
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 🔑 Credenciales de Acceso de Prueba
+
+El sistema inicializa automáticamente dos perfiles gracias a los seeders:
+
+* **Administrador:**
+  * **Email:** `admin@mundial.com`
+  * **Contraseña:** `123456`
+* **Usuario Regular:**
+  * **Email:** `user@mundial.com`
+  * **Contraseña:** `123456`
+
+---
+
+## 📊 Arquitectura del Modelo de Datos
+
+Para conocer los detalles exactos del diseño relacional, llaves primarias/foráneas y restricciones de integridad del proyecto, puedes consultar:
+* El archivo de documentación del modelo de datos: [database_model.md](file:///C:/Users/juanf/.gemini/antigravity-ide/brain/a82b14e2-da42-4f5f-b820-b0177e7e7ddb/database_model.md)

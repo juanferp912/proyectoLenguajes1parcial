@@ -99,9 +99,4 @@ El sistema inicializa automáticamente dos perfiles gracias a los seeders:
   * **Email:** `user@mundial.com`
   * **Contraseña:** `123456`
 
----
 
-## 📊 Arquitectura del Modelo de Datos
-
-Para conocer los detalles exactos del diseño relacional, llaves primarias/foráneas y restricciones de integridad del proyecto, puedes consultar:
-* El archivo de documentación del modelo de datos: [database_model.md](file:///C:/Users/juanf/.gemini/antigravity-ide/brain/a82b14e2-da42-4f5f-b820-b0177e7e7ddb/database_model.md)

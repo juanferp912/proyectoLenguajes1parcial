@@ -11,7 +11,6 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Registramos tu middleware de seguridad correctamente
         $middleware->alias([
             'admin' => \App\Http\Middleware\EsAdmin::class,
         ]);

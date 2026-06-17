@@ -13,7 +13,7 @@
 </div>
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
-    @foreach(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'] as $letraGrupo)
+    @foreach(range('A', 'L') as $letraGrupo)
         @php
             $equiposGrupo = $equipos->where('grupo', $letraGrupo);
         @endphp
